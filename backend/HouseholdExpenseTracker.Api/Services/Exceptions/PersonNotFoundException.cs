@@ -2,5 +2,5 @@ namespace HouseholdExpenseTracker.Api.Services.Exceptions;
 
 public class PersonNotFoundException : Exception
 {
-    public PersonNotFoundException(Guid id) : base($"Person with id '{id}' was not found.") { }
+    public PersonNotFoundException(Guid id) : base($"Pessoa com id '{id}' não foi encontrada.") { }
 }

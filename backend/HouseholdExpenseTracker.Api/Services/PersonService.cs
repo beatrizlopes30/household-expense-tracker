@@ -26,12 +26,12 @@ public class PersonService
     {
         if (string.IsNullOrWhiteSpace(dto.Name))
         {
-            throw new BusinessRuleException("Name cannot be empty.");
+            throw new BusinessRuleException("O nome não pode ser vazio.");
         }
 
         if (dto.Age < 0 || dto.Age > 120)
         {
-            throw new BusinessRuleException("Age must be between 0 and 120.");
+            throw new BusinessRuleException("A idade deve estar entre 0 e 120");
         }
 
         var person = new Person

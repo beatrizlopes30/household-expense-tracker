@@ -33,12 +33,12 @@ public class TransactionService
     {
         if (string.IsNullOrWhiteSpace(dto.Description))
         {
-            throw new BusinessRuleException("Description cannot be empty.");
+            throw new BusinessRuleException("A descrição não pode estar vazia.");
         }
 
         if (dto.Amount <= 0)
         {
-            throw new BusinessRuleException("Transaction amount must be greater than zero.");
+            throw new BusinessRuleException("O valor da transação deve ser maior que zero.");
         }
 
         var person = await _dbContext.People.FindAsync(dto.PersonId);
@@ -51,8 +51,7 @@ public class TransactionService
         if (person.IsMinor && dto.Type == TransactionType.Income)
         {
             throw new BusinessRuleException(
-                $"{person.Name} is {person.Age} years old and is a minor: " +
-                "only expense transactions can be registered for this person.");
+                $"{person.Name} é menor de idade. Apenas despesas podem ser cadastradas.");
         }
 
         var transaction = new Transaction
