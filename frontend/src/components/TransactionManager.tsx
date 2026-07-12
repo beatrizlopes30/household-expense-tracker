@@ -4,9 +4,10 @@ import type { Person, Transaction, TransactionType } from "../types/domain";
 
 interface TransactionManagerProps {
   people: Person[];
+  onPeopleChanged: () => void;
 }
 
-export function TransactionManager({ people }: TransactionManagerProps) {
+export function TransactionManager({ people, onPeopleChanged }: TransactionManagerProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [description, setDescription] = useState("");
   const [amount, setAmount] = useState("");
@@ -27,6 +28,12 @@ export function TransactionManager({ people }: TransactionManagerProps) {
   const selectedPerson = people.find((person) => person.id === personId);
   const isMinorSelected = selectedPerson ? selectedPerson.age < 18 : false;
 
+  useEffect(() => {
+    if (isMinorSelected && type === "Income") {
+      setType("Expense");
+    }
+  }, [isMinorSelected, type]);
+
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setErrorMessage(null);
@@ -41,6 +48,17 @@ export function TransactionManager({ people }: TransactionManagerProps) {
       setErrorMessage(error instanceof Error ? error.message : "Não foi possível cadastrar a transação.");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  async function handleDeletePerson(id: string) {
+    setErrorMessage(null);
+    try {
+      await api.deletePerson(id);
+      onPeopleChanged();
+      await loadTransactions();
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Não foi possível excluir a pessoa.");
     }
   }
 
@@ -67,7 +85,7 @@ export function TransactionManager({ people }: TransactionManagerProps) {
         />
         <select value={type} onChange={(event) => setType(event.target.value as TransactionType)}>
           <option value="Expense">Despesa</option>
-          <option value="Income">Receita</option>
+          {!isMinorSelected && <option value="Income">Receita</option>}
         </select>
         <select value={personId} onChange={(event) => setPersonId(event.target.value)} required>
           <option value="">Selecione uma pessoa</option>
@@ -91,6 +109,19 @@ export function TransactionManager({ people }: TransactionManagerProps) {
 
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
 
+      <h3>Pessoas cadastradas</h3>
+      <ul>
+        {people.map((person) => (
+          <li key={person.id}>
+            {person.name} ({person.age} anos){person.age < 18 && " — menor de idade"}
+            <button onClick={() => handleDeletePerson(person.id)} style={{ marginLeft: "0.5rem" }}>
+              Excluir
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <h3>Transações cadastradas</h3>
       <ul>
         {transactions.map((transaction) => (
           <li key={transaction.id}>

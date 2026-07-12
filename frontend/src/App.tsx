@@ -31,7 +31,9 @@ function App() {
         <button onClick={() => setIsModalOpen(true)}>Adicionar Pessoa</button>
       </nav>
 
-      {activeTab === "transactions" && <TransactionManager people={people} />}
+     {activeTab === "transactions" && (
+  <TransactionManager people={people} onPeopleChanged={loadPeople} />
+)}
       {activeTab === "totals" && <TotalsView />}
 
       {isModalOpen && (
