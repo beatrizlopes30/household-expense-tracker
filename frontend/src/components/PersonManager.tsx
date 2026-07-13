@@ -15,8 +15,7 @@ export function PersonManager({ people, onPeopleChanged, onClose }: PersonManage
   const [submitting, setSubmitting] = useState(false);
 
   function handleAgeChange(value: string) {
-    const digitsOnly = value.replace(/\D/g, "");
-    setAge(digitsOnly);
+    setAge(value.replace(/\D/g, ""));
   }
 
   async function handleCreate(event: FormEvent<HTMLFormElement>) {
@@ -46,14 +45,14 @@ export function PersonManager({ people, onPeopleChanged, onClose }: PersonManage
   }
 
   return (
-    <div style={overlayStyle}>
-      <div style={modalStyle}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <div className="modal-overlay">
+      <div className="modal">
+        <div className="modal-header">
           <h2>Cadastro de Pessoas</h2>
-          <button onClick={onClose}>Fechar</button>
+          <button className="btn btn-outline" onClick={onClose}>Fechar</button>
         </div>
 
-        <form onSubmit={handleCreate} style={{ display: "flex", gap: "0.5rem", margin: "1rem 0" }}>
+        <form onSubmit={handleCreate} className="form" style={{ marginBottom: "1rem" }}>
           <input
             type="text"
             placeholder="Nome"
@@ -70,18 +69,24 @@ export function PersonManager({ people, onPeopleChanged, onClose }: PersonManage
             onChange={(event) => handleAgeChange(event.target.value)}
             required
           />
-          <button type="submit" disabled={submitting}>
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             {submitting ? "Cadastrando..." : "Cadastrar"}
           </button>
         </form>
 
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        <ul>
+        <ul className="entry-list">
           {people.map((person) => (
             <li key={person.id}>
-              {person.name} ({person.age} anos){person.age < 18 && " — menor de idade"}
-              <button onClick={() => handleDelete(person.id)} style={{ marginLeft: "0.5rem" }}>
+              <div className="entry-main">
+                <span>
+                  {person.name}
+                  {person.age < 18 && <span className="badge-minor">menor</span>}
+                </span>
+                <span className="entry-meta">{person.age} anos</span>
+              </div>
+              <button className="btn btn-danger" onClick={() => handleDelete(person.id)}>
                 Excluir
               </button>
             </li>
@@ -91,25 +96,3 @@ export function PersonManager({ people, onPeopleChanged, onClose }: PersonManage
     </div>
   );
 }
-
-const overlayStyle: React.CSSProperties = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: "rgba(0, 0, 0, 0.5)",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-};
-
-const modalStyle: React.CSSProperties = {
-  backgroundColor: "white",
-  padding: "1.5rem",
-  borderRadius: "8px",
-  minWidth: "400px",
-  maxWidth: "90vw",
-  maxHeight: "80vh",
-  overflowY: "auto",
-};

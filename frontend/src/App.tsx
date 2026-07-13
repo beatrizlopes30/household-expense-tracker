@@ -22,18 +22,36 @@ function App() {
   }
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "1rem" }}>
-      <h1>Controle de Gastos Residenciais</h1>
+    <div className="app-shell">
+      <header className="app-header">
+        <img src="/logo.png" alt="Controle de Gastos Residenciais" className="app-logo" />
+        <h1 className="app-title">Controle de Gastos Residenciais</h1>
+      </header>
 
-      <nav style={{ display: "flex", gap: "1rem", marginBottom: "1rem" }}>
-        <button onClick={() => setActiveTab("transactions")}>Transações</button>
-        <button onClick={() => setActiveTab("totals")}>Totais</button>
-        <button onClick={() => setIsModalOpen(true)}>Adicionar Pessoa</button>
-      </nav>
+      <div className="toolbar">
+        <nav className="tab-nav">
+          <button
+            className={`tab-button ${activeTab === "transactions" ? "active" : ""}`}
+            onClick={() => setActiveTab("transactions")}
+          >
+            Transações
+          </button>
+          <button
+            className={`tab-button ${activeTab === "totals" ? "active" : ""}`}
+            onClick={() => setActiveTab("totals")}
+          >
+            Totais
+          </button>
+        </nav>
 
-     {activeTab === "transactions" && (
-  <TransactionManager people={people} onPeopleChanged={loadPeople} />
-)}
+        <button className="btn btn-primary" onClick={() => setIsModalOpen(true)}>
+          Adicionar Pessoa
+        </button>
+      </div>
+
+      {activeTab === "transactions" && (
+        <TransactionManager people={people} onPeopleChanged={loadPeople} />
+      )}
       {activeTab === "totals" && <TotalsView />}
 
       {isModalOpen && (
