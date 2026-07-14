@@ -1,10 +1,11 @@
 # Controle de Gastos Residenciais
 
-API RESTful para controle de gastos residenciais, construída com **.NET 8**, **ASP.NET Core Web API**, **Entity Framework Core** e banco de dados **SQLite**. Inclui front-end em **React + TypeScript** e testes unitários.
+API RESTful para controle de gastos residenciais, construída com **.NET 8**, **ASP.NET Core Web API**, **Entity Framework Core** e banco de dados **SQLite**. Inclui front-end em **React + TypeScript**, documentação Swagger e testes unitários.
 
 ## ✨ Funcionalidades
 
 - **API RESTful** para cadastro de pessoas, transações e consulta de totais
+- Documentação interativa com **Swagger UI**
 - Banco de dados **SQLite em arquivo** (persistência real em disco, sem servidor externo)
 - **Testes unitários** com xUnit e Entity Framework InMemory
 - Validação de regras de negócio no servidor, incluindo a regra de menores de idade
@@ -36,6 +37,9 @@ dotnet run
 A API estará disponível em:
 http://localhost:5168
 
+A documentação interativa (Swagger) fica disponível em:
+http://localhost:5168/swagger
+
 O banco de dados SQLite (`householdexpensetracker.db`) é criado automaticamente na primeira execução, com as migrations já aplicadas.
 
 ### 3. Executar o front-end
@@ -60,6 +64,7 @@ VITE_API_URL=http://localhost:PORTA/api
 
 A API pode ser testada das seguintes formas:
 
+- **Swagger UI**: interface interativa disponível em http://localhost:5168/swagger
 - **Interface web**: através do front-end em http://localhost:5173
 - **Insomnia ou Postman**: envie requisições diretamente para os endpoints
 
@@ -71,6 +76,14 @@ dotnet test
 ```
 
 ## 📚 Documentação da API
+
+Com o back-end em execução, acesse a documentação interativa em:
+
+```
+http://localhost:5168/swagger
+```
+
+Lá é possível visualizar o schema de cada request/response e testar chamadas diretamente pela interface ("Try it out").
 
 ### Principais Endpoints
 
