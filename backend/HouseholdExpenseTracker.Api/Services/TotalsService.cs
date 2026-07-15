@@ -13,7 +13,8 @@ public class TotalsService
     {
         _dbContext = dbContext;
     }
-
+    
+    // Totals are calculated from current transactions to always stay in sync.
     public async Task<ConsolidatedTotalsDto> GetTotalsAsync()
     {
         var people = await _dbContext.People

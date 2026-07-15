@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 const string FrontendCorsPolicy = "FrontendCorsPolicy";
 
 // Database
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -27,6 +28,8 @@ builder.Services.AddCors(options =>
 });
 
 // Controllers
+// Returns enums as strings instead of numbers in JSON responses,
+// making the API more readable for the frontend.
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -48,11 +51,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(FrontendCorsPolicy);
+// Must run before MapControllers so it can catch exceptions thrown by any endpoint.
 app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 
 // Migrations 
+// Applies migrations on startup to create and update the database automatically.
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();

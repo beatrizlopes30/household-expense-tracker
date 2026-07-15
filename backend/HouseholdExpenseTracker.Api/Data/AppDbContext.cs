@@ -12,12 +12,13 @@ public class AppDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+    // Cascade delete removes related transactions automatically
         modelBuilder.Entity<Transaction>()
             .HasOne(transaction => transaction.Person)
             .WithMany(person => person.Transactions)
             .HasForeignKey(transaction => transaction.PersonId)
             .OnDelete(DeleteBehavior.Cascade);
-
+    // Fixed precision avoids money rounding errors
         modelBuilder.Entity<Transaction>()
             .Property(transaction => transaction.Amount)
             .HasPrecision(18, 2);

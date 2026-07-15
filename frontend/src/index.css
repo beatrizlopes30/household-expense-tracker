@@ -224,6 +224,9 @@ button {
 
 /* Monetary values */
 
+/* tabular-nums keeps digit widths consistent, so amounts
+ align vertically when listed  */
+
 .amount {
   font-family: "IBM Plex Mono", monospace;
   font-variant-numeric: tabular-nums;

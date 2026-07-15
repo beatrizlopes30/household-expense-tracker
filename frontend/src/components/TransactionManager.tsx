@@ -27,7 +27,8 @@ export function TransactionManager({ people, onPeopleChanged }: TransactionManag
 
   const selectedPerson = people.find((person) => person.id === personId);
   const isMinorSelected = selectedPerson ? selectedPerson.age < 18 : false;
-
+// Prevents an invalid state: if a subcategory is selected while "Income" is chosen,
+// it forces the selection back to "Expense" so that the form never allows a business rule violation.
   useEffect(() => {
     if (isMinorSelected && type === "Income") {
       setType("Expense");

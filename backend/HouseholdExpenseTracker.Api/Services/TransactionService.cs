@@ -47,7 +47,7 @@ public class TransactionService
         {
             throw new PersonNotFoundException(dto.PersonId);
         }
-
+        // Minors can only have expense transactions
         if (person.IsMinor && dto.Type == TransactionType.Income)
         {
             throw new BusinessRuleException(

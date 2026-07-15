@@ -28,7 +28,7 @@ public class PersonService
         {
             throw new BusinessRuleException("O nome não pode ser vazio.");
         }
-
+    // 120 is only used to prevent typing mistakes
         if (dto.Age < 0 || dto.Age > 120)
         {
             throw new BusinessRuleException("A idade deve estar entre 0 e 120");
